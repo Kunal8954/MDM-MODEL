@@ -79,6 +79,23 @@ export const AoiMonitoringView: React.FC<Props> = ({
   const [error, setError] = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  /**
+   * Anomalies in the shape the map draws, taken from the same records the results table
+   * shows so a polygon and its row always refer to one finding. The map is coloured by
+   * anomaly confidence, so a weak detection stays visibly weaker than a strong one
+   * instead of being flattened into a severity bucket.
+   */
+  const mapAnomalies = useMemo(
+    () =>
+      anomalies.map((anomaly) => ({
+        regionId: anomaly.region_id,
+        geometry: anomaly.geometry,
+        anomalyConfidence: anomaly.anomaly_confidence,
+        areaKm2: anomaly.area_km2,
+      })),
+    [anomalies]
+  );
+
   useEffect(() => {
     api.getDemoSites()
       .then((data) => setDemoSites(data.sites))
@@ -638,6 +655,21 @@ export const AoiMonitoringView: React.FC<Props> = ({
             <GeospatialMap
               locations={[]}
               onSelectLocation={() => undefined}
+              aoi={
+                selectedArea
+                  ? {
+                      geometry: selectedArea.geometry,
+                      label: selectedArea.user_label,
+                      areaKm2: selectedArea.area_km2,
+                    }
+                  : null
+              }
+              anomalies={mapAnomalies}
+              highlightedRegionId={selectedAnomaly?.region_id ?? null}
+              onSelectAnomaly={(regionId) => {
+                const match = anomalies.find((a) => a.region_id === regionId);
+                if (match) setSelectedAnomaly(match);
+              }}
               onSelectCoordinates={(coords) => {
                 // Clicks only build a polygon when polygon input is selected, so an
                 // accidental click cannot quietly change a bbox the user already typed.

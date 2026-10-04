@@ -1,26 +1,77 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { CriticalLocation } from '../types/api';
+import { AnomalyRegion, GeoJSONPolygon } from '../types/monitoring';
 import { MapPin, Info, Layers, Crosshair, RotateCcw, Radio } from 'lucide-react';
+
+/** Polygon outline of the monitored AOI, in GeoJSON order (lon, lat pairs). */
+export interface MapAoi {
+  geometry: GeoJSONPolygon;
+  label?: string | null;
+  areaKm2?: number | null;
+}
+
+/** A detected anomaly to draw, coloured by its own confidence rather than its severity. */
+export interface MapAnomaly {
+  regionId: string;
+  geometry: GeoJSONPolygon;
+  anomalyConfidence: number;
+  areaKm2?: number | null;
+}
 
 interface GeospatialMapProps {
   locations: CriticalLocation[];
   selectedLocationId?: string | null;
   onSelectLocation: (location: CriticalLocation) => void;
   onSelectCoordinates?: (coords: { lat: number; lng: number }) => void;
+  /** AOI outline. When present the map frames itself on it. */
+  aoi?: MapAoi | null;
+  /** Anomalies from the current run, drawn as polygons and coloured by confidence. */
+  anomalies?: MapAnomaly[];
+  /** Anomaly to highlight because it is selected in the results table. */
+  highlightedRegionId?: string | null;
+  onSelectAnomaly?: (regionId: string) => void;
 }
+
+/**
+ * Confidence colour ramp for detected anomalies.
+ *
+ * Weak detections must look weak, so the fill tracks the anomaly confidence
+ * continuously rather than collapsing into four severity buckets. The ramp runs
+ * cool-to-hot so a glance at the map ranks the detections the same way the
+ * confidence numbers do, and it stays legible over both basemaps.
+ */
+const confidenceColor = (confidence: number): string => {
+  const clamped = Math.max(0, Math.min(1, confidence ?? 0));
+  if (clamped >= 0.85) return '#EF4444';
+  if (clamped >= 0.7) return '#F97316';
+  if (clamped >= 0.55) return '#F59E0B';
+  if (clamped >= 0.4) return '#38BDF8';
+  return '#64748B';
+};
+
+/** Converts a GeoJSON polygon to the [lat, lng] pairs Leaflet expects. */
+const toLeafletRings = (geometry: GeoJSONPolygon): L.LatLngExpression[][] =>
+  geometry.coordinates.map((ring) =>
+    ring.map(([lon, lat]) => [lat, lon] as [number, number])
+  );
 
 export const GeospatialMap: React.FC<GeospatialMapProps> = ({
   locations,
   selectedLocationId,
   onSelectLocation,
   onSelectCoordinates,
+  aoi = null,
+  anomalies = [],
+  highlightedRegionId = null,
+  onSelectAnomaly,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const activeTileLayersRef = useRef<L.Layer[]>([]);
   const userPinLayerRef = useRef<L.LayerGroup | null>(null);
+  const anomalyLayerRef = useRef<L.LayerGroup | null>(null);
 
   const [basemap, setBasemap] = useState<'satellite' | 'dark'>('satellite');
   const [showSarSwath, setShowSarSwath] = useState<boolean>(true);
@@ -56,8 +107,10 @@ export const GeospatialMap: React.FC<GeospatialMapProps> = ({
 
     const markersLayer = L.layerGroup().addTo(map);
     const userPinLayer = L.layerGroup().addTo(map);
+    const anomalyLayer = L.layerGroup().addTo(map);
     markersLayerRef.current = markersLayer;
     userPinLayerRef.current = userPinLayer;
+    anomalyLayerRef.current = anomalyLayer;
     mapInstanceRef.current = map;
 
     const timer = setTimeout(() => {
@@ -172,6 +225,66 @@ export const GeospatialMap: React.FC<GeospatialMapProps> = ({
       activeTileLayersRef.current = [darkLayer];
     }
   }, [basemap]);
+
+  // Draw the AOI outline and every detected anomaly polygon.
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const layer = anomalyLayerRef.current;
+    if (!map || !layer) return;
+
+    layer.clearLayers();
+
+    if (aoi) {
+      layer.addLayer(
+        L.polygon(toLeafletRings(aoi.geometry), {
+          color: '#38BDF8',
+          weight: 2,
+          dashArray: '6, 4',
+          fillColor: '#38BDF8',
+          fillOpacity: 0.06,
+          interactive: false,
+        })
+      );
+    }
+
+    anomalies.forEach((anomaly) => {
+      const color = confidenceColor(anomaly.anomalyConfidence);
+      const isHighlighted = highlightedRegionId === anomaly.regionId;
+
+      const polygon = L.polygon(toLeafletRings(anomaly.geometry), {
+        color,
+        weight: isHighlighted ? 3 : 2,
+        fillColor: color,
+        // Confidence is encoded by hue and by opacity together: a 0.5 detection is
+        // visibly weaker than a 0.95 one even where the hues are hard to tell apart.
+        fillOpacity: isHighlighted ? 0.45 : 0.12 + anomaly.anomalyConfidence * 0.25,
+      });
+
+      polygon.bindTooltip(
+        `Anomaly ${anomaly.regionId} · confidence ${Math.round(anomaly.anomalyConfidence * 100)}%` +
+          (anomaly.areaKm2 ? ` · ${anomaly.areaKm2.toFixed(2)} km²` : ''),
+        { sticky: true, direction: 'top' }
+      );
+      polygon.on('click', () => onSelectAnomaly?.(anomaly.regionId));
+
+      layer.addLayer(polygon);
+    });
+  }, [aoi, anomalies, highlightedRegionId, onSelectAnomaly]);
+
+  // Frame the AOI once it exists, so the monitored extent is what the operator sees
+  // rather than a hard-coded regional view.
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !aoi) return;
+
+    const outer = toLeafletRings(aoi.geometry)[0];
+    if (!outer?.length) return;
+
+    map.fitBounds(L.latLngBounds(outer as [number, number][]), {
+      padding: [30, 30],
+      maxZoom: 16,
+    });
+  }, [aoi]);
 
   // Update Markers & Sentinel SAR Swaths
   useEffect(() => {
@@ -305,7 +418,20 @@ export const GeospatialMap: React.FC<GeospatialMapProps> = ({
 
   const resetBounds = () => {
     const map = mapInstanceRef.current;
-    if (!map || locations.length === 0) return;
+    if (!map) return;
+
+    if (aoi) {
+      const outer = toLeafletRings(aoi.geometry)[0];
+      if (outer?.length) {
+        map.fitBounds(L.latLngBounds(outer as [number, number][]), {
+          padding: [30, 30],
+          maxZoom: 16,
+        });
+        return;
+      }
+    }
+
+    if (locations.length === 0) return;
     const bounds = L.latLngBounds([]);
     locations.forEach((loc) => {
       if (loc.latitude !== undefined && loc.longitude !== undefined) {
@@ -436,25 +562,53 @@ export const GeospatialMap: React.FC<GeospatialMapProps> = ({
             backdropFilter: 'blur(6px)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Risk Hierarchy:</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#EF4444' }} /> CRIT
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F97316' }} /> HIGH
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B' }} /> MOD
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981' }} /> LOW
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#94A3B8', fontSize: '10px' }}>
-            <Info size={12} color="#38BDF8" />
-            <span>Click any location point to inspect or click anywhere on terrain to set target pin</span>
-          </div>
+          {anomalies.length > 0 ? (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
+                  Anomaly confidence:
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '2px', background: '#EF4444' }} /> 85%+
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '2px', background: '#F59E0B' }} /> 55%
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '2px', background: '#64748B' }} /> &lt;40%
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#94A3B8', fontSize: '10px' }}>
+                <Info size={12} color="#38BDF8" />
+                <span>
+                  {anomalies.length} anomal{anomalies.length === 1 ? 'y' : 'ies'} detected
+                  {aoi?.label ? ` in ${aoi.label}` : ''} · click a polygon to open it
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Risk Hierarchy:</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#EF4444' }} /> CRIT
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F97316' }} /> HIGH
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#F59E0B' }} /> MOD
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981' }} /> LOW
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#94A3B8', fontSize: '10px' }}>
+                <Info size={12} color="#38BDF8" />
+                <span>Click any location point to inspect or click anywhere on terrain to set target pin</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -20,6 +20,60 @@ import {
   MonitoringRunResult,
 } from '../types/monitoring';
 
+/**
+ * Leaflet is stubbed so the map's drawing can be asserted directly: which polygons were
+ * handed to Leaflet, and with what colour and opacity. That is the only way to check
+ * that a detection is actually rendered rather than merely computed into the results.
+ */
+const polygonCalls: { rings: unknown; options: Record<string, any> }[] = [];
+
+vi.mock('leaflet', () => {
+  const mapMock = {
+    setView: vi.fn().mockReturnThis(),
+    fitBounds: vi.fn().mockReturnThis(),
+    remove: vi.fn(),
+    on: vi.fn().mockReturnThis(),
+    invalidateSize: vi.fn(),
+  };
+  const layerGroupMock = {
+    addTo: vi.fn().mockReturnThis(),
+    clearLayers: vi.fn().mockReturnThis(),
+    addLayer: vi.fn().mockReturnThis(),
+  };
+  const shapeMock = {
+    bindPopup: vi.fn().mockReturnThis(),
+    bindTooltip: vi.fn().mockReturnThis(),
+    openPopup: vi.fn().mockReturnThis(),
+    on: vi.fn().mockReturnThis(),
+  };
+
+  return {
+    default: {
+      map: vi.fn(() => mapMock),
+      tileLayer: vi.fn(() => ({ addTo: vi.fn() })),
+      layerGroup: vi.fn(() => layerGroupMock),
+      circleMarker: vi.fn(() => shapeMock),
+      circle: vi.fn(() => shapeMock),
+      polygon: vi.fn((rings: unknown, options: Record<string, any>) => {
+        polygonCalls.push({ rings, options });
+        return shapeMock;
+      }),
+      latLng: vi.fn((lat, lng) => ({ lat, lng })),
+      latLngBounds: vi.fn((points) => ({
+        points,
+        extend: vi.fn(),
+        isValid: vi.fn(() => true),
+      })),
+      control: {
+        attribution: vi.fn(() => ({
+          addAttribution: vi.fn().mockReturnThis(),
+          addTo: vi.fn(),
+        })),
+      },
+    },
+  };
+});
+
 const DEMO_SITES: DemoSite[] = [
   {
     name: 'tehri_dam_construction',
@@ -279,6 +333,97 @@ describe('AoiMonitoringView', () => {
     // The synthetic-data note sits beside the summary, not inside it.
     expect(screen.getByText(/Not satellite observations/)).toBeInTheDocument();
     expect(within(summary).getByText(/IoU 100%/)).toBeInTheDocument();
+  });
+
+  it('draws the AOI outline and every detected anomaly on the map', async () => {
+    polygonCalls.length = 0;
+    render(<AoiMonitoringView api={makeApi()} pollIntervalMs={10} />);
+
+    await userEvent.click(await screen.findByRole('button', { name: /run monitoring/i }));
+
+    await waitFor(() => expect(screen.getByText(ANOMALY.region_id)).toBeInTheDocument());
+
+    // The AOI outline plus one polygon per anomaly. Previously the map was handed an
+    // empty location list and drew nothing at all, so a run finished with a blank map.
+    // Each redraw clears and re-adds, so the last pass is the current state.
+    expect(polygonCalls.length).toBeGreaterThanOrEqual(2);
+
+    // GeoJSON is [lon, lat] and Leaflet wants [lat, lon], so every ring the map was
+    // given must be the coordinate order swapped. Getting this backwards puts the AOI
+    // in the ocean off the coast of Africa.
+    const asLeafletRing = (ring: number[][]) => ring.map(([lon, lat]) => [lat, lon]);
+
+    const aoiCall = polygonCalls.find((c) => c.options.interactive === false);
+    expect(aoiCall).toBeDefined();
+    const aoiRing = aoiCall!.rings as number[][][];
+    expect(aoiRing[0]).toEqual(asLeafletRing(AREA.geometry.coordinates[0]));
+
+    const anomalyCall = polygonCalls.find((c) => c.options.interactive !== false)!;
+    expect(anomalyCall.rings).toEqual(
+      [asLeafletRing(ANOMALY.geometry.coordinates[0])]
+    );
+    // 0.87 confidence sits in the top band of the confidence ramp.
+    expect(anomalyCall.options.fillColor).toBe('#EF4444');
+  });
+
+  it('scales anomaly fill with confidence so a weak detection looks weak', async () => {
+    // Both anomalies share one severity, so severity cannot explain any colour
+    // difference between them. Only the confidence colouring can.
+    // Distinct geometries, so each polygon can be told apart on the map.
+    const weakGeometry = {
+      type: 'Polygon' as const,
+      coordinates: [[[78.60, 30.30], [78.62, 30.30], [78.62, 30.32], [78.60, 30.32], [78.60, 30.30]]],
+    };
+    const strongGeometry = {
+      type: 'Polygon' as const,
+      coordinates: [[[78.66, 30.36], [78.69, 30.36], [78.69, 30.39], [78.66, 30.39], [78.66, 30.36]]],
+    };
+    const weak: AnomalyRecord = {
+      ...ANOMALY, id: 'anom-weak', region_id: 'region-weak', geometry: weakGeometry,
+      anomaly_confidence: 0.42, severity: 'critical', area_m2: 900,
+    };
+    const strong: AnomalyRecord = {
+      ...ANOMALY, id: 'anom-strong', region_id: 'region-strong', geometry: strongGeometry,
+      area_m2: 1_800,
+    };
+    const api = makeApi({
+      listAnomalies: vi.fn().mockResolvedValue({
+        count: 2,
+        summary_by_severity: {
+          critical: { count: 2, area_km2: 18.2 }, high: { count: 0, area_km2: 0 },
+          moderate: { count: 0, area_km2: 0 }, low: { count: 0, area_km2: 0 },
+          none: { count: 0, area_km2: 0 },
+        },
+        anomalies: [strong, weak],
+      }),
+    });
+
+    polygonCalls.length = 0;
+    render(<AoiMonitoringView api={api} pollIntervalMs={10} />);
+    await userEvent.click(await screen.findByRole('button', { name: /run monitoring/i }));
+    await waitFor(() => expect(screen.getByText('region-strong')).toBeInTheDocument());
+
+    // Redraws clear and re-add, so collect the final pass by the identity of each record.
+    const latestPass = new Map<string, (typeof polygonCalls)[number]>();
+    polygonCalls.forEach((call, index) => {
+      const key = JSON.stringify(call.rings);
+      latestPass.set(key, { ...call, rings: call.rings, options: { ...call.options, __i: index } });
+    });
+
+    const leafKey = (geometry: { coordinates: number[][][] }) =>
+      JSON.stringify([geometry.coordinates[0].map(([lon, lat]) => [lat, lon])]);
+
+    const strongCall = [...latestPass.values()].find(
+      (c) => JSON.stringify(c.rings) === leafKey(strong.geometry)
+    )!;
+    const weakCall = [...latestPass.values()].find(
+      (c) => JSON.stringify(c.rings) === leafKey(weak.geometry)
+    )!;
+
+    expect(strongCall).toBeDefined();
+    expect(weakCall).toBeDefined();
+    expect(strongCall.options.fillColor).not.toBe(weakCall.options.fillColor);
+    expect(strongCall.options.fillOpacity).toBeGreaterThan(weakCall.options.fillOpacity);
   });
 
   it('orders anomalies by severity rather than alphabetically', async () => {

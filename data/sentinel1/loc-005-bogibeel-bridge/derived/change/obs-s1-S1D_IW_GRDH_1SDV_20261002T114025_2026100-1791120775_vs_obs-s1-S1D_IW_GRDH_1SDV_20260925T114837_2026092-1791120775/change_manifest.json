@@ -1,0 +1,1446 @@
+{
+  "location_id": "loc-005-bogibeel-bridge",
+  "t1": {
+    "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260925T114837_2026092-1791120775",
+    "product_id": "S1D_IW_GRDH_1SDV_20260925T114837_20260925T114902_004734_008DBE_EA88_COG",
+    "acquisition_time": "2026-09-25T11:48:37.557301",
+    "orbit_direction": "ASCENDING",
+    "relative_orbit": 143,
+    "vv_mean_db": -19.9324,
+    "vh_mean_db": -32.7258
+  },
+  "t2": {
+    "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775",
+    "product_id": "S1D_IW_GRDH_1SDV_20261002T114025_20261002T114050_004836_009162_BB33_COG",
+    "acquisition_time": "2026-10-02T11:40:25.423472",
+    "orbit_direction": "ASCENDING",
+    "relative_orbit": 70,
+    "vv_mean_db": -15.909,
+    "vh_mean_db": -33.2455
+  },
+  "vv_threshold_db": 3.0,
+  "vh_threshold_db": 3.0,
+  "total_aoi_pixels": 205892,
+  "valid_pixels": 205892,
+  "changed_pixels": 180781,
+  "changed_percentage": 87.8,
+  "vv_changed_percentage": 69.15,
+  "vh_changed_percentage": 68.7,
+  "joint_changed_percentage": 50.04,
+  "delta_vv_statistics": {
+    "min": -69.208,
+    "max": 72.7501,
+    "mean": 4.0234,
+    "median": 4.0309,
+    "std": 9.0058,
+    "valid_pixel_count": 205892
+  },
+  "delta_vh_statistics": {
+    "min": -66.0251,
+    "max": 65.2752,
+    "mean": -0.5197,
+    "median": 0.7104,
+    "std": 22.1711,
+    "valid_pixel_count": 205892
+  },
+  "significant_change_regions_count": 87,
+  "significant_change_regions": [
+    {
+      "region_id": 1,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 178891,
+      "area_m2": 17889100.0,
+      "centroid": [
+        254.77,
+        248.84
+      ],
+      "bounding_box": [
+        0,
+        0,
+        511,
+        511
+      ]
+    },
+    {
+      "region_id": 366,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 134,
+      "area_m2": 13400.0,
+      "centroid": [
+        329.22,
+        490.14
+      ],
+      "bounding_box": [
+        320,
+        478,
+        339,
+        502
+      ]
+    },
+    {
+      "region_id": 174,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 98,
+      "area_m2": 9800.0,
+      "centroid": [
+        188.66,
+        401.55
+      ],
+      "bounding_box": [
+        180,
+        395,
+        195,
+        410
+      ]
+    },
+    {
+      "region_id": 280,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 88,
+      "area_m2": 8800.0,
+      "centroid": [
+        287.67,
+        502.4
+      ],
+      "bounding_box": [
+        280,
+        495,
+        295,
+        509
+      ]
+    },
+    {
+      "region_id": 352,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 48,
+      "area_m2": 4800.0,
+      "centroid": [
+        321.08,
+        487.02
+      ],
+      "bounding_box": [
+        314,
+        482,
+        328,
+        491
+      ]
+    },
+    {
+      "region_id": 374,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 42,
+      "area_m2": 4200.0,
+      "centroid": [
+        330.52,
+        497.19
+      ],
+      "bounding_box": [
+        325,
+        494,
+        337,
+        501
+      ]
+    },
+    {
+      "region_id": 451,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 40,
+      "area_m2": 4000.0,
+      "centroid": [
+        355.52,
+        483.93
+      ],
+      "bounding_box": [
+        351,
+        477,
+        360,
+        490
+      ]
+    },
+    {
+      "region_id": 259,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 36,
+      "area_m2": 3600.0,
+      "centroid": [
+        276.72,
+        508.83
+      ],
+      "bounding_box": [
+        270,
+        507,
+        283,
+        511
+      ]
+    },
+    {
+      "region_id": 54,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 28,
+      "area_m2": 2800.0,
+      "centroid": [
+        76.71,
+        309.57
+      ],
+      "bounding_box": [
+        73,
+        305,
+        80,
+        313
+      ]
+    },
+    {
+      "region_id": 135,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 28,
+      "area_m2": 2800.0,
+      "centroid": [
+        158.32,
+        21.29
+      ],
+      "bounding_box": [
+        156,
+        18,
+        162,
+        25
+      ]
+    },
+    {
+      "region_id": 102,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 22,
+      "area_m2": 2200.0,
+      "centroid": [
+        123.41,
+        40.59
+      ],
+      "bounding_box": [
+        121,
+        38,
+        127,
+        44
+      ]
+    },
+    {
+      "region_id": 334,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 20,
+      "area_m2": 2000.0,
+      "centroid": [
+        308.35,
+        251.1
+      ],
+      "bounding_box": [
+        306,
+        248,
+        312,
+        255
+      ]
+    },
+    {
+      "region_id": 296,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 19,
+      "area_m2": 1900.0,
+      "centroid": [
+        289.89,
+        479.89
+      ],
+      "bounding_box": [
+        288,
+        477,
+        292,
+        483
+      ]
+    },
+    {
+      "region_id": 345,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 17,
+      "area_m2": 1700.0,
+      "centroid": [
+        313.71,
+        383.18
+      ],
+      "bounding_box": [
+        311,
+        379,
+        316,
+        386
+      ]
+    },
+    {
+      "region_id": 354,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 16,
+      "area_m2": 1600.0,
+      "centroid": [
+        319.0,
+        36.31
+      ],
+      "bounding_box": [
+        316,
+        33,
+        321,
+        39
+      ]
+    },
+    {
+      "region_id": 2,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 15,
+      "area_m2": 1500.0,
+      "centroid": [
+        8.27,
+        312.2
+      ],
+      "bounding_box": [
+        6,
+        310,
+        11,
+        315
+      ]
+    },
+    {
+      "region_id": 260,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 15,
+      "area_m2": 1500.0,
+      "centroid": [
+        272.8,
+        504.07
+      ],
+      "bounding_box": [
+        271,
+        501,
+        275,
+        507
+      ]
+    },
+    {
+      "region_id": 470,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 15,
+      "area_m2": 1500.0,
+      "centroid": [
+        360.8,
+        484.93
+      ],
+      "bounding_box": [
+        359,
+        482,
+        363,
+        487
+      ]
+    },
+    {
+      "region_id": 159,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 14,
+      "area_m2": 1400.0,
+      "centroid": [
+        172.93,
+        473.29
+      ],
+      "bounding_box": [
+        171,
+        471,
+        175,
+        475
+      ]
+    },
+    {
+      "region_id": 169,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 14,
+      "area_m2": 1400.0,
+      "centroid": [
+        178.86,
+        412.5
+      ],
+      "bounding_box": [
+        177,
+        411,
+        181,
+        414
+      ]
+    },
+    {
+      "region_id": 481,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 14,
+      "area_m2": 1400.0,
+      "centroid": [
+        365.86,
+        369.86
+      ],
+      "bounding_box": [
+        364,
+        368,
+        367,
+        372
+      ]
+    },
+    {
+      "region_id": 504,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 14,
+      "area_m2": 1400.0,
+      "centroid": [
+        379.93,
+        368.64
+      ],
+      "bounding_box": [
+        378,
+        366,
+        381,
+        371
+      ]
+    },
+    {
+      "region_id": 24,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 12,
+      "area_m2": 1200.0,
+      "centroid": [
+        58.58,
+        96.33
+      ],
+      "bounding_box": [
+        57,
+        94,
+        60,
+        99
+      ]
+    },
+    {
+      "region_id": 40,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 12,
+      "area_m2": 1200.0,
+      "centroid": [
+        67.08,
+        84.75
+      ],
+      "bounding_box": [
+        66,
+        82,
+        68,
+        87
+      ]
+    },
+    {
+      "region_id": 257,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 12,
+      "area_m2": 1200.0,
+      "centroid": [
+        271.33,
+        460.42
+      ],
+      "bounding_box": [
+        269,
+        458,
+        274,
+        462
+      ]
+    },
+    {
+      "region_id": 183,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 11,
+      "area_m2": 1100.0,
+      "centroid": [
+        185.82,
+        408.64
+      ],
+      "bounding_box": [
+        184,
+        407,
+        188,
+        410
+      ]
+    },
+    {
+      "region_id": 32,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        62.1,
+        97.8
+      ],
+      "bounding_box": [
+        61,
+        96,
+        63,
+        100
+      ]
+    },
+    {
+      "region_id": 56,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        76.4,
+        124.3
+      ],
+      "bounding_box": [
+        75,
+        123,
+        78,
+        126
+      ]
+    },
+    {
+      "region_id": 99,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        117.2,
+        41.4
+      ],
+      "bounding_box": [
+        115,
+        40,
+        119,
+        43
+      ]
+    },
+    {
+      "region_id": 186,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        188.4,
+        469.7
+      ],
+      "bounding_box": [
+        187,
+        468,
+        190,
+        471
+      ]
+    },
+    {
+      "region_id": 209,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        206.6,
+        411.9
+      ],
+      "bounding_box": [
+        205,
+        409,
+        208,
+        415
+      ]
+    },
+    {
+      "region_id": 263,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        274.5,
+        269.0
+      ],
+      "bounding_box": [
+        273,
+        267,
+        276,
+        271
+      ]
+    },
+    {
+      "region_id": 306,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        295.1,
+        443.8
+      ],
+      "bounding_box": [
+        293,
+        442,
+        297,
+        446
+      ]
+    },
+    {
+      "region_id": 416,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 10,
+      "area_m2": 1000.0,
+      "centroid": [
+        338.3,
+        488.2
+      ],
+      "bounding_box": [
+        337,
+        486,
+        339,
+        491
+      ]
+    },
+    {
+      "region_id": 136,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 9,
+      "area_m2": 900.0,
+      "centroid": [
+        156.89,
+        472.56
+      ],
+      "bounding_box": [
+        156,
+        471,
+        158,
+        474
+      ]
+    },
+    {
+      "region_id": 144,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 9,
+      "area_m2": 900.0,
+      "centroid": [
+        162.56,
+        24.89
+      ],
+      "bounding_box": [
+        161,
+        24,
+        165,
+        26
+      ]
+    },
+    {
+      "region_id": 251,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 9,
+      "area_m2": 900.0,
+      "centroid": [
+        266.78,
+        510.11
+      ],
+      "bounding_box": [
+        265,
+        508,
+        268,
+        511
+      ]
+    },
+    {
+      "region_id": 302,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 9,
+      "area_m2": 900.0,
+      "centroid": [
+        293.44,
+        259.22
+      ],
+      "bounding_box": [
+        291,
+        258,
+        295,
+        260
+      ]
+    },
+    {
+      "region_id": 304,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 9,
+      "area_m2": 900.0,
+      "centroid": [
+        294.11,
+        448.44
+      ],
+      "bounding_box": [
+        292,
+        447,
+        296,
+        450
+      ]
+    },
+    {
+      "region_id": 371,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 9,
+      "area_m2": 900.0,
+      "centroid": [
+        325.67,
+        29.67
+      ],
+      "bounding_box": [
+        324,
+        28,
+        327,
+        31
+      ]
+    },
+    {
+      "region_id": 91,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        98.25,
+        131.12
+      ],
+      "bounding_box": [
+        97,
+        130,
+        100,
+        132
+      ]
+    },
+    {
+      "region_id": 141,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        159.88,
+        473.38
+      ],
+      "bounding_box": [
+        159,
+        471,
+        161,
+        475
+      ]
+    },
+    {
+      "region_id": 217,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        213.75,
+        408.0
+      ],
+      "bounding_box": [
+        212,
+        407,
+        215,
+        409
+      ]
+    },
+    {
+      "region_id": 223,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        233.25,
+        487.38
+      ],
+      "bounding_box": [
+        232,
+        486,
+        234,
+        489
+      ]
+    },
+    {
+      "region_id": 261,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        273.38,
+        465.5
+      ],
+      "bounding_box": [
+        272,
+        464,
+        275,
+        467
+      ]
+    },
+    {
+      "region_id": 370,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        323.75,
+        438.25
+      ],
+      "bounding_box": [
+        323,
+        437,
+        325,
+        440
+      ]
+    },
+    {
+      "region_id": 432,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        345.0,
+        493.5
+      ],
+      "bounding_box": [
+        344,
+        492,
+        346,
+        495
+      ]
+    },
+    {
+      "region_id": 508,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        384.38,
+        475.5
+      ],
+      "bounding_box": [
+        383,
+        474,
+        386,
+        477
+      ]
+    },
+    {
+      "region_id": 521,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        402.88,
+        410.75
+      ],
+      "bounding_box": [
+        401,
+        409,
+        405,
+        412
+      ]
+    },
+    {
+      "region_id": 565,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 8,
+      "area_m2": 800.0,
+      "centroid": [
+        470.75,
+        298.88
+      ],
+      "bounding_box": [
+        469,
+        298,
+        472,
+        300
+      ]
+    },
+    {
+      "region_id": 84,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 7,
+      "area_m2": 700.0,
+      "centroid": [
+        89.14,
+        146.0
+      ],
+      "bounding_box": [
+        88,
+        145,
+        91,
+        147
+      ]
+    },
+    {
+      "region_id": 192,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 7,
+      "area_m2": 700.0,
+      "centroid": [
+        190.0,
+        462.71
+      ],
+      "bounding_box": [
+        189,
+        462,
+        191,
+        464
+      ]
+    },
+    {
+      "region_id": 308,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 7,
+      "area_m2": 700.0,
+      "centroid": [
+        295.43,
+        498.29
+      ],
+      "bounding_box": [
+        294,
+        496,
+        296,
+        500
+      ]
+    },
+    {
+      "region_id": 337,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 7,
+      "area_m2": 700.0,
+      "centroid": [
+        311.43,
+        378.71
+      ],
+      "bounding_box": [
+        310,
+        377,
+        312,
+        381
+      ]
+    },
+    {
+      "region_id": 441,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 7,
+      "area_m2": 700.0,
+      "centroid": [
+        349.0,
+        34.0
+      ],
+      "bounding_box": [
+        348,
+        33,
+        350,
+        35
+      ]
+    },
+    {
+      "region_id": 560,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 7,
+      "area_m2": 700.0,
+      "centroid": [
+        460.57,
+        302.57
+      ],
+      "bounding_box": [
+        459,
+        302,
+        462,
+        304
+      ]
+    },
+    {
+      "region_id": 15,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        52.0,
+        102.67
+      ],
+      "bounding_box": [
+        51,
+        101,
+        53,
+        104
+      ]
+    },
+    {
+      "region_id": 23,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        55.67,
+        121.33
+      ],
+      "bounding_box": [
+        55,
+        120,
+        57,
+        123
+      ]
+    },
+    {
+      "region_id": 85,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        89.17,
+        299.0
+      ],
+      "bounding_box": [
+        88,
+        298,
+        90,
+        300
+      ]
+    },
+    {
+      "region_id": 168,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        175.17,
+        415.0
+      ],
+      "bounding_box": [
+        175,
+        413,
+        176,
+        417
+      ]
+    },
+    {
+      "region_id": 180,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        183.83,
+        466.33
+      ],
+      "bounding_box": [
+        182,
+        466,
+        185,
+        467
+      ]
+    },
+    {
+      "region_id": 215,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        211.17,
+        448.0
+      ],
+      "bounding_box": [
+        210,
+        447,
+        212,
+        449
+      ]
+    },
+    {
+      "region_id": 285,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        286.83,
+        452.67
+      ],
+      "bounding_box": [
+        285,
+        452,
+        288,
+        453
+      ]
+    },
+    {
+      "region_id": 349,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        313.5,
+        488.0
+      ],
+      "bounding_box": [
+        312,
+        487,
+        315,
+        489
+      ]
+    },
+    {
+      "region_id": 357,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        316.83,
+        502.33
+      ],
+      "bounding_box": [
+        316,
+        501,
+        318,
+        504
+      ]
+    },
+    {
+      "region_id": 383,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        329.17,
+        24.83
+      ],
+      "bounding_box": [
+        328,
+        24,
+        330,
+        26
+      ]
+    },
+    {
+      "region_id": 387,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        330.33,
+        374.67
+      ],
+      "bounding_box": [
+        329,
+        374,
+        331,
+        376
+      ]
+    },
+    {
+      "region_id": 516,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        394.5,
+        398.67
+      ],
+      "bounding_box": [
+        393,
+        398,
+        396,
+        399
+      ]
+    },
+    {
+      "region_id": 529,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        411.17,
+        423.33
+      ],
+      "bounding_box": [
+        410,
+        422,
+        412,
+        424
+      ]
+    },
+    {
+      "region_id": 531,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 6,
+      "area_m2": 600.0,
+      "centroid": [
+        414.0,
+        401.5
+      ],
+      "bounding_box": [
+        412,
+        401,
+        416,
+        402
+      ]
+    },
+    {
+      "region_id": 19,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        54.4,
+        98.4
+      ],
+      "bounding_box": [
+        53,
+        98,
+        56,
+        99
+      ]
+    },
+    {
+      "region_id": 51,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        73.2,
+        159.4
+      ],
+      "bounding_box": [
+        72,
+        159,
+        74,
+        160
+      ]
+    },
+    {
+      "region_id": 80,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        86.0,
+        119.6
+      ],
+      "bounding_box": [
+        85,
+        119,
+        87,
+        121
+      ]
+    },
+    {
+      "region_id": 82,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        88.8,
+        121.6
+      ],
+      "bounding_box": [
+        88,
+        120,
+        89,
+        123
+      ]
+    },
+    {
+      "region_id": 104,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        124.0,
+        60.8
+      ],
+      "bounding_box": [
+        123,
+        60,
+        125,
+        62
+      ]
+    },
+    {
+      "region_id": 158,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        171.2,
+        20.0
+      ],
+      "bounding_box": [
+        170,
+        19,
+        172,
+        21
+      ]
+    },
+    {
+      "region_id": 170,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        179.0,
+        416.8
+      ],
+      "bounding_box": [
+        178,
+        416,
+        180,
+        418
+      ]
+    },
+    {
+      "region_id": 188,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        188.4,
+        412.2
+      ],
+      "bounding_box": [
+        188,
+        411,
+        189,
+        413
+      ]
+    },
+    {
+      "region_id": 271,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        277.4,
+        418.0
+      ],
+      "bounding_box": [
+        277,
+        417,
+        278,
+        419
+      ]
+    },
+    {
+      "region_id": 272,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        278.6,
+        447.2
+      ],
+      "bounding_box": [
+        277,
+        447,
+        280,
+        448
+      ]
+    },
+    {
+      "region_id": 298,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        289.4,
+        447.8
+      ],
+      "bounding_box": [
+        289,
+        447,
+        290,
+        449
+      ]
+    },
+    {
+      "region_id": 303,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        291.8,
+        445.0
+      ],
+      "bounding_box": [
+        291,
+        444,
+        293,
+        446
+      ]
+    },
+    {
+      "region_id": 307,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        293.8,
+        495.4
+      ],
+      "bounding_box": [
+        293,
+        494,
+        294,
+        497
+      ]
+    },
+    {
+      "region_id": 310,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        298.0,
+        253.8
+      ],
+      "bounding_box": [
+        297,
+        253,
+        299,
+        255
+      ]
+    },
+    {
+      "region_id": 372,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        325.0,
+        371.0
+      ],
+      "bounding_box": [
+        324,
+        370,
+        326,
+        372
+      ]
+    },
+    {
+      "region_id": 436,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        347.0,
+        471.2
+      ],
+      "bounding_box": [
+        346,
+        470,
+        348,
+        472
+      ]
+    },
+    {
+      "region_id": 501,
+      "designation": "SIGNIFICANT_SAR_CHANGE_REGION",
+      "pixel_count": 5,
+      "area_m2": 500.0,
+      "centroid": [
+        377.8,
+        371.6
+      ],
+      "bounding_box": [
+        377,
+        371,
+        379,
+        372
+      ]
+    }
+  ],
+  "delta_vv_raster": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\derived\\change\\obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775_vs_obs-s1-S1D_IW_GRDH_1SDV_20260925T114837_2026092-1791120775\\delta_vv.tif",
+  "delta_vh_raster": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\derived\\change\\obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775_vs_obs-s1-S1D_IW_GRDH_1SDV_20260925T114837_2026092-1791120775\\delta_vh.tif",
+  "change_raster": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\derived\\change\\obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775_vs_obs-s1-S1D_IW_GRDH_1SDV_20260925T114837_2026092-1791120775\\change_mask.tif",
+  "created_at": "2026-10-04T13:33:15.715189+00:00",
+  "status": "SUCCESS"
+}

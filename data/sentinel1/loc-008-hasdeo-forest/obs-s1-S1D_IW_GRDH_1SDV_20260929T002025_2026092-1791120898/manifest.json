@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-008-hasdeo-forest",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260929T002025_2026092-1791120898",
+  "product_id": "S1D_IW_GRDH_1SDV_20260929T002025_20260929T002050_004785_008F91_0B4C_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-29T00:20:25.430360",
+  "retrieved_at": "2026-10-04T13:35:16.055708+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-008-hasdeo-forest\\obs-s1-S1D_IW_GRDH_1SDV_20260929T002025_2026092-1791120898\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260929T002025_20260929T002050_004785_008F91_0B4C_COG.tif",
+  "file_size_bytes": 1899027,
+  "sha256": "c15914cd1e78872a6c48a7339446a8ff2d65938182f0ea4689200bdcc138fab1",
+  "retrieval_status": "SUCCESS"
+}

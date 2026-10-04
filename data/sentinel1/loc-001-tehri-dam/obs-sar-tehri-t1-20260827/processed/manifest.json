@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-001-tehri-dam",
+  "observation_id": "obs-sar-tehri-t1-20260827",
+  "product_id": "S1D_IW_GRDH_1SDV_20260827T004304_20260827T004329_004304_007EDF_7A90_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "DESCENDING",
+  "relative_orbit": 63,
+  "acquisition_time": "2026-08-27T00:43:04",
+  "processed_at": "2026-10-04T07:26:10.168944+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-sar-tehri-t1-20260827\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260827T004304_20260827T004329_004304_007EDF_7A90_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-sar-tehri-t1-20260827\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-sar-tehri-t1-20260827\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -70.0,
+    "max": 15.34,
+    "mean": -11.0562,
+    "median": -10.4939,
+    "std": 6.235,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": 2.871,
+    "mean": -17.9859,
+    "median": -16.3819,
+    "std": 9.4122,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-009-sardar-sarovar",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260930T010148_2026093-1791120949",
+  "product_id": "S1D_IW_GRDH_1SDV_20260930T010148_20260930T010213_004800_00901B_25BD_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "DESCENDING",
+  "relative_orbit": 34,
+  "acquisition_time": "2026-09-30T01:01:48.346476",
+  "processed_at": "2026-10-04T13:35:59.719369+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-009-sardar-sarovar\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010148_2026093-1791120949\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260930T010148_20260930T010213_004800_00901B_25BD_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-009-sardar-sarovar\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010148_2026093-1791120949\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-009-sardar-sarovar\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010148_2026093-1791120949\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -70.0,
+    "max": 16.8201,
+    "mean": -8.9779,
+    "median": -7.8577,
+    "std": 5.0605,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": 2.4783,
+    "mean": -16.4178,
+    "median": -14.8661,
+    "std": 6.3952,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

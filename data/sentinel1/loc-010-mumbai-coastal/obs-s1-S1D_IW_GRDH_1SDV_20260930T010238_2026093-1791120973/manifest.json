@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-010-mumbai-coastal",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260930T010238_2026093-1791120973",
+  "product_id": "S1D_IW_GRDH_1SDV_20260930T010238_20260930T010309_004800_00901B_8A28_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-30T01:02:38.345626",
+  "retrieved_at": "2026-10-04T13:36:22.424862+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-010-mumbai-coastal\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010238_2026093-1791120973\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260930T010238_20260930T010309_004800_00901B_8A28_COG.tif",
+  "file_size_bytes": 1774968,
+  "sha256": "8c3e8b4ac98a71f5d07b24f35459e7f4b2d0eadef763b59583eefabd52fe9b60",
+  "retrieval_status": "SUCCESS"
+}

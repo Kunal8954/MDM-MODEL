@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-003-siachen-glacier",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260930T005803_2026093-1791120706",
+  "product_id": "S1D_IW_GRDH_1SDV_20260930T005803_20260930T005828_004800_00901B_5C08_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "DESCENDING",
+  "relative_orbit": 34,
+  "acquisition_time": "2026-09-30T00:58:03.346563",
+  "processed_at": "2026-10-04T13:32:07.429207+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-003-siachen-glacier\\obs-s1-S1D_IW_GRDH_1SDV_20260930T005803_2026093-1791120706\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260930T005803_20260930T005828_004800_00901B_5C08_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-003-siachen-glacier\\obs-s1-S1D_IW_GRDH_1SDV_20260930T005803_2026093-1791120706\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-003-siachen-glacier\\obs-s1-S1D_IW_GRDH_1SDV_20260930T005803_2026093-1791120706\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -33.9866,
+    "max": 20.7245,
+    "mean": -8.7214,
+    "median": -9.0164,
+    "std": 5.2881,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": 9.2636,
+    "mean": -14.9662,
+    "median": -15.5976,
+    "std": 5.3938,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

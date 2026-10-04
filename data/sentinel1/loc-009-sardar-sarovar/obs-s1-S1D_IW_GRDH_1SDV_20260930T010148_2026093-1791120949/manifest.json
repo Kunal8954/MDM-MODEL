@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-009-sardar-sarovar",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260930T010148_2026093-1791120949",
+  "product_id": "S1D_IW_GRDH_1SDV_20260930T010148_20260930T010213_004800_00901B_25BD_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-30T01:01:48.346476",
+  "retrieved_at": "2026-10-04T13:35:59.627515+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-009-sardar-sarovar\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010148_2026093-1791120949\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260930T010148_20260930T010213_004800_00901B_25BD_COG.tif",
+  "file_size_bytes": 1803952,
+  "sha256": "6a2e537d240282a6c80ae8703a74410069c7508c0959a5ffc1766a1f8ab59885",
+  "retrieval_status": "SUCCESS"
+}

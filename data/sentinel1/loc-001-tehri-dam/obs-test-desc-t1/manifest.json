@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-001-tehri-dam",
+  "observation_id": "obs-test-desc-t1",
+  "product_id": "S1_TEST_PROD_DESC_T1",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-08-27T00:43:00",
+  "retrieved_at": "2026-10-04T07:38:53.646534+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-test-desc-t1\\sentinel1_grd_S1_TEST_PROD_DESC_T1.tif",
+  "file_size_bytes": 1914686,
+  "sha256": "5e22d5375f7e081fca7c38f3cb05aa37146e3bb65800edd157f007166096ca25",
+  "retrieval_status": "SUCCESS"
+}

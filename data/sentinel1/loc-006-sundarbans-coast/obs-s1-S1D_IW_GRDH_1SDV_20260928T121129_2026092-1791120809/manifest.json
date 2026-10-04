@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-006-sundarbans-coast",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260928T121129_2026092-1791120809",
+  "product_id": "S1D_IW_GRDH_1SDV_20260928T121129_20260928T121158_004778_008F55_9E03_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-28T12:11:29.651998",
+  "retrieved_at": "2026-10-04T13:33:54.061019+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-006-sundarbans-coast\\obs-s1-S1D_IW_GRDH_1SDV_20260928T121129_2026092-1791120809\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260928T121129_20260928T121158_004778_008F55_9E03_COG.tif",
+  "file_size_bytes": 1803491,
+  "sha256": "d59690f0b87cdc2d223085063cac0af414c97e1eb6ade5881da0a0c22dc7062a",
+  "retrieval_status": "SUCCESS"
+}

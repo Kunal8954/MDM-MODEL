@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-007-jharia-coalfield",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20261003T122027_2026100-1791120844",
+  "product_id": "S1D_IW_GRDH_1SDV_20261003T122027_20261003T122052_004851_0091DF_541C_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "ASCENDING",
+  "relative_orbit": 85,
+  "acquisition_time": "2026-10-03T12:20:27.387954",
+  "processed_at": "2026-10-04T13:34:25.023130+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-007-jharia-coalfield\\obs-s1-S1D_IW_GRDH_1SDV_20261003T122027_2026100-1791120844\\sentinel1_grd_S1D_IW_GRDH_1SDV_20261003T122027_20261003T122052_004851_0091DF_541C_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-007-jharia-coalfield\\obs-s1-S1D_IW_GRDH_1SDV_20261003T122027_2026100-1791120844\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-007-jharia-coalfield\\obs-s1-S1D_IW_GRDH_1SDV_20261003T122027_2026100-1791120844\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -30.7424,
+    "max": 22.2155,
+    "mean": -7.6222,
+    "median": -7.4194,
+    "std": 3.2429,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": 12.8457,
+    "mean": -14.1955,
+    "median": -13.7083,
+    "std": 3.3506,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

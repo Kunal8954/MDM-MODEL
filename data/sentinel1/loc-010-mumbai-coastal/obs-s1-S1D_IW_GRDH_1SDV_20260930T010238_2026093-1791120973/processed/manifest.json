@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-010-mumbai-coastal",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260930T010238_2026093-1791120973",
+  "product_id": "S1D_IW_GRDH_1SDV_20260930T010238_20260930T010309_004800_00901B_8A28_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "DESCENDING",
+  "relative_orbit": 34,
+  "acquisition_time": "2026-09-30T01:02:38.345626",
+  "processed_at": "2026-10-04T13:36:22.504653+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-010-mumbai-coastal\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010238_2026093-1791120973\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260930T010238_20260930T010309_004800_00901B_8A28_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-010-mumbai-coastal\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010238_2026093-1791120973\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-010-mumbai-coastal\\obs-s1-S1D_IW_GRDH_1SDV_20260930T010238_2026093-1791120973\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -70.0,
+    "max": 32.369,
+    "mean": -16.6632,
+    "median": -21.6499,
+    "std": 12.3499,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": 20.4569,
+    "mean": -27.5986,
+    "median": -27.1875,
+    "std": 18.2772,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

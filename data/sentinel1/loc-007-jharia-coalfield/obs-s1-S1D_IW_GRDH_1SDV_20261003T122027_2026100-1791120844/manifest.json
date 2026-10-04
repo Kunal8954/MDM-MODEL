@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-007-jharia-coalfield",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20261003T122027_2026100-1791120844",
+  "product_id": "S1D_IW_GRDH_1SDV_20261003T122027_20261003T122052_004851_0091DF_541C_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-10-03T12:20:27.387954",
+  "retrieved_at": "2026-10-04T13:34:24.940765+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-007-jharia-coalfield\\obs-s1-S1D_IW_GRDH_1SDV_20261003T122027_2026100-1791120844\\sentinel1_grd_S1D_IW_GRDH_1SDV_20261003T122027_20261003T122052_004851_0091DF_541C_COG.tif",
+  "file_size_bytes": 1895403,
+  "sha256": "bffc8122e6e9753ae023cdbdb85bbc5d328468356efad57ec72fb768cf2668b4",
+  "retrieval_status": "SUCCESS"
+}

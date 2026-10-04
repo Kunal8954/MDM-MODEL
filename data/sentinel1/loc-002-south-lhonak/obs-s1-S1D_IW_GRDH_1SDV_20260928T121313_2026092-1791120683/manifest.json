@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-002-south-lhonak",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260928T121313_2026092-1791120683",
+  "product_id": "S1D_IW_GRDH_1SDV_20260928T121313_20260928T121338_004778_008F55_1667_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-28T12:13:13.938311",
+  "retrieved_at": "2026-10-04T13:31:31.775916+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-002-south-lhonak\\obs-s1-S1D_IW_GRDH_1SDV_20260928T121313_2026092-1791120683\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260928T121313_20260928T121338_004778_008F55_1667_COG.tif",
+  "file_size_bytes": 1922972,
+  "sha256": "947b61c4203862a42c18b8ce5850f06dc85a8de73c66524ad590b5570c87a4ee",
+  "retrieval_status": "SUCCESS"
+}

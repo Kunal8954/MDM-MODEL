@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-005-bogibeel-bridge",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260925T114837_2026092-1791120775",
+  "product_id": "S1D_IW_GRDH_1SDV_20260925T114837_20260925T114902_004734_008DBE_EA88_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-25T11:48:37.557301",
+  "retrieved_at": "2026-10-04T13:33:06.330758+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\obs-s1-S1D_IW_GRDH_1SDV_20260925T114837_2026092-1791120775\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260925T114837_20260925T114902_004734_008DBE_EA88_COG.tif",
+  "file_size_bytes": 1851448,
+  "sha256": "3790b7b8f3363660a4b8d15a1ec1964874af65d152f47bde994b6fc401894fe1",
+  "retrieval_status": "SUCCESS"
+}

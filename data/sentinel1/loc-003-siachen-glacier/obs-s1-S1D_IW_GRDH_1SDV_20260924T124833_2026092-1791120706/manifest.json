@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-003-siachen-glacier",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260924T124833_2026092-1791120706",
+  "product_id": "S1D_IW_GRDH_1SDV_20260924T124833_20260924T124858_004720_008D4A_F739_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-09-24T12:48:33.714990",
+  "retrieved_at": "2026-10-04T13:32:17.426832+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-003-siachen-glacier\\obs-s1-S1D_IW_GRDH_1SDV_20260924T124833_2026092-1791120706\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260924T124833_20260924T124858_004720_008D4A_F739_COG.tif",
+  "file_size_bytes": 1920241,
+  "sha256": "4ef46efe80882967bdcef395dc64d8ce4f19248bd167e6500b3fcffb6dfbe1c2",
+  "retrieval_status": "SUCCESS"
+}

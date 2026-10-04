@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-006-sundarbans-coast",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260928T121129_2026092-1791120809",
+  "product_id": "S1D_IW_GRDH_1SDV_20260928T121129_20260928T121158_004778_008F55_9E03_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "ASCENDING",
+  "relative_orbit": 12,
+  "acquisition_time": "2026-09-28T12:11:29.651998",
+  "processed_at": "2026-10-04T13:33:54.149416+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-006-sundarbans-coast\\obs-s1-S1D_IW_GRDH_1SDV_20260928T121129_2026092-1791120809\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260928T121129_20260928T121158_004778_008F55_9E03_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-006-sundarbans-coast\\obs-s1-S1D_IW_GRDH_1SDV_20260928T121129_2026092-1791120809\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-006-sundarbans-coast\\obs-s1-S1D_IW_GRDH_1SDV_20260928T121129_2026092-1791120809\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -28.5975,
+    "max": -2.8094,
+    "mean": -13.476,
+    "median": -8.8615,
+    "std": 6.9357,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": -10.1776,
+    "mean": -21.4259,
+    "median": -14.7739,
+    "std": 9.1023,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

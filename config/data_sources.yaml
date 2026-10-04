@@ -1,0 +1,301 @@
+# ==============================================================================
+# SATGUARD PLATFORM DATA SOURCES CONFIGURATION
+# Phase 0 Production Specification
+# ==============================================================================
+
+version: "1.0"
+platform: "SATGUARD"
+description: "Authoritative external data sources, endpoints, parameters, and baseline critical locations"
+
+# ------------------------------------------------------------------------------
+# 1. PRIMARY SATELLITE PROVIDERS (Copernicus Data Space Ecosystem)
+# ------------------------------------------------------------------------------
+copernicus_data_space:
+  auth:
+    token_url: "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
+    grant_type: "client_credentials"
+    token_ttl_seconds: 600
+    refresh_safety_margin_seconds: 60
+  
+  stac:
+    endpoint: "https://stac.dataspace.copernicus.eu/v1"
+    search_path: "/search"
+    collections_path: "/collections"
+    timeout_seconds: 30
+    max_items_per_page: 50
+
+  odata:
+    endpoint: "https://catalogue.dataspace.copernicus.eu/odata/v1"
+    products_path: "/Products"
+    timeout_seconds: 45
+
+  s3_eodata:
+    endpoint_url: "https://eodata.dataspace.copernicus.eu"
+    region_name: "default"
+    bucket: "eodata"
+    addressing_style: "path"
+    max_concurrent_streams: 4
+
+  sentinel_hub:
+    endpoint: "https://sh.dataspace.copernicus.eu"
+    process_api_path: "/api/v1/process"
+    statistical_api_path: "/api/v1/statistics"
+
+  missions:
+    sentinel_1:
+      collection: "sentinel-1-grd"
+      product_types: ["GRD"]
+      operational_modes: ["IW"] # Interferometric Wide Swath
+      polarizations: ["VV", "VH"]
+      resolution_meters: 10
+      repeat_cycle_days: 6
+      processing_level: "Level-1"
+      lookback_window_days: 14
+
+    sentinel_2:
+      collection: "sentinel-2-l2a"
+      product_types: ["S2MSI2A"]
+      processing_level: "Level-2A" # Bottom of Atmosphere Surface Reflectance
+      bands:
+        coastal_aerosol: "B01"
+        blue: "B02"
+        green: "B03"
+        red: "B04"
+        red_edge_1: "B05"
+        red_edge_2: "B06"
+        red_edge_3: "B07"
+        nir: "B08"
+        nir_narrow: "B8A"
+        water_vapour: "B09"
+        swir_1: "B11"
+        swir_2: "B12"
+        scene_classification: "SCL"
+      cloud_cover_max_threshold_percent: 25.0
+      repeat_cycle_days: 5
+      lookback_window_days: 15
+
+# ------------------------------------------------------------------------------
+# 2. DIGITAL ELEVATION MODEL (DEM)
+# ------------------------------------------------------------------------------
+copernicus_dem:
+  provider: "AWS_OPEN_DATA"
+  s3_bucket: "copernicus-dem-30m"
+  s3_region: "eu-central-1"
+  anonymous_access: true
+  resolution_arcsec: 1
+  resolution_meters: 30
+  grid_format: "COG" # Cloud-Optimized GeoTIFF
+  geoid: "EGM2008"
+  coordinate_system: "EPSG:4326"
+
+# ------------------------------------------------------------------------------
+# 3. PRECIPITATION (NASA GPM / IMERG)
+# ------------------------------------------------------------------------------
+nasa_gpm:
+  auth:
+    provider: "NASA_EARTHDATA_URS"
+    login_url: "https://urs.earthdata.nasa.gov"
+    required_approved_apps:
+      - "NASA GES DISC DATA ARCHIVE"
+      - "Hyrax in the Cloud"
+  cmr_search_endpoint: "https://cmr.earthdata.nasa.gov/search/granules.json"
+  opendap_endpoint: "https://gpm1.gesdisc.eosdis.nasa.gov/opendap"
+  collections:
+    half_hourly:
+      short_name: "GPM_3IMERGHH"
+      version: "07B"
+      spatial_resolution_deg: 0.1
+      latency_hours: 4.0
+    daily:
+      short_name: "GPM_3IMERGDF"
+      version: "07B"
+      spatial_resolution_deg: 0.1
+      latency_hours: 14.0
+  lookback_windows_hours: [24, 48, 72]
+
+# ------------------------------------------------------------------------------
+# 4. ACTIVE WILDFIRES & THERMAL ANOMALIES (NASA FIRMS)
+# ------------------------------------------------------------------------------
+nasa_firms:
+  endpoint: "https://firms.modaps.eosdis.nasa.gov/api"
+  area_path: "/area/csv"
+  default_sensor: "VIIRS_SNPP_NRT"
+  available_sensors:
+    - "VIIRS_SNPP_NRT"
+    - "VIIRS_NOAA20_NRT"
+    - "VIIRS_NOAA21_NRT"
+    - "MODIS_NRT"
+  default_lookback_days: 2
+  max_lookback_days: 10
+  confidence_filter: "nominal,high"
+  rate_limit_min_interval_seconds: 60
+
+# ------------------------------------------------------------------------------
+# 5. SEISMIC HAZARDS (USGS Earthquake Hazards Program)
+# ------------------------------------------------------------------------------
+usgs_earthquake:
+  fdsn_endpoint: "https://earthquake.usgs.gov/fdsnws/event/1/query"
+  realtime_feeds:
+    past_hour_all: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
+    past_day_significant: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson"
+    past_week_m45: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+  query_defaults:
+    format: "geojson"
+    default_radius_km: 100.0
+    default_min_magnitude: 3.5
+    emergency_trigger_magnitude: 5.0
+    lookback_days: 7
+  rate_limit_max_requests_per_second: 5
+
+# ------------------------------------------------------------------------------
+# 6. OPENSTREETMAP (OSM Infrastructure Vectors)
+# ------------------------------------------------------------------------------
+openstreetmap:
+  overpass_api:
+    endpoints:
+      - "https://overpass-api.de/api/interpreter"
+      - "https://overpass.kumi.systems/api/interpreter"
+    timeout_seconds: 60
+    max_query_retries: 3
+    user_agent: "SATGUARD-GeoIntelligence/1.0 (satguard-monitoring@domain.gov)"
+  nominatim:
+    endpoint: "https://nominatim.openstreetmap.org/search"
+    reverse_endpoint: "https://nominatim.openstreetmap.org/reverse"
+    rate_limit_delay_seconds: 1.1
+
+# ------------------------------------------------------------------------------
+# 7. LLM EVIDENCE SYNTHESIS (Groq LPU Engine)
+# ------------------------------------------------------------------------------
+groq_llm:
+  endpoint: "https://api.groq.com/openai/v1/chat/completions"
+  primary_model: "llama-3.3-70b-versatile"
+  fallback_model: "mixtral-8x7b-32768"
+  temperature: 0.1
+  max_output_tokens: 1500
+  response_format:
+    type: "json_object"
+  timeout_seconds: 15.0
+
+# ------------------------------------------------------------------------------
+# 8. INITIAL CRITICAL LOCATIONS (10 Representative Zones)
+# ------------------------------------------------------------------------------
+critical_locations:
+  - id: "loc-001-tehri-dam"
+    name: "Tehri Dam and Reservoir"
+    location_type: "dam"
+    latitude: 30.3781
+    longitude: 78.4803
+    radius_meters: 8000
+    priority: "critical"
+    risk_category: "structural_instability_and_seismic"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "Copernicus-DEM", "NASA-GPM", "USGS-Seismic"]
+    description: "Highest dam in India; earth and rock-fill embankment located in seismic zone V on Bhagirathi River."
+
+  - id: "loc-002-south-lhonak"
+    name: "South Lhonak Glacial Lake"
+    location_type: "glacial_lake"
+    latitude: 27.9152
+    longitude: 88.2045
+    radius_meters: 6000
+    priority: "critical"
+    risk_category: "glof_lake_expansion"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "Copernicus-DEM", "NASA-GPM"]
+    description: "Proglacial lake in North Sikkim susceptible to catastrophic Glacial Lake Outburst Floods (GLOF)."
+
+  - id: "loc-003-siachen-glacier"
+    name: "Siachen Glacier Snout and Main Trunk"
+    location_type: "glacier"
+    latitude: 35.5000
+    longitude: 76.9500
+    radius_meters: 15000
+    priority: "elevated"
+    risk_category: "cryosphere_retreat_and_crevasse"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "Copernicus-DEM"]
+    description: "Strategic high-altitude valley glacier in eastern Karakoram with rapid thermal dynamics."
+
+  - id: "loc-004-joshimath-slope"
+    name: "Joshimath Town and Mountain Slopes"
+    location_type: "mountain_slope"
+    latitude: 30.5564
+    longitude: 79.5670
+    radius_meters: 5000
+    priority: "critical"
+    risk_category: "subsidence_and_landslide"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Copernicus-DEM", "NASA-GPM", "USGS-Seismic"]
+    description: "Tectonically active Himalayan slope experiencing chronic ground subsidence and slope instability."
+
+  - id: "loc-005-bogibeel-bridge"
+    name: "Bogibeel Combined Rail and Road Bridge"
+    location_type: "bridge"
+    latitude: 27.3980
+    longitude: 94.7570
+    radius_meters: 4000
+    priority: "elevated"
+    risk_category: "flood_erosion_and_morphology"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "NASA-GPM"]
+    description: "Longest combined bridge in India across braided, high-discharge Brahmaputra River channel."
+
+  - id: "loc-006-sundarbans-coast"
+    name: "Sundarbans Coastal Vulnerable Zone"
+    location_type: "coastal_zone"
+    latitude: 21.7500
+    longitude: 88.7500
+    radius_meters: 20000
+    priority: "elevated"
+    risk_category: "sea_level_inundation_and_cyclone_surge"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "Copernicus-DEM"]
+    description: "Low-lying tidal delta vulnerable to saline intrusion, mangrove degradation, and storm surges."
+
+  - id: "loc-007-jharia-coalfield"
+    name: "Jharia Open Cast Coal Mining & Thermal Area"
+    location_type: "mine"
+    latitude: 23.7420
+    longitude: 86.4150
+    radius_meters: 7000
+    priority: "elevated"
+    risk_category: "subsurface_coal_fire_and_pit_collapse"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "NASA-FIRMS"]
+    description: "Massive open-pit mining complex with active underground fires and ground collapse risks."
+
+  - id: "loc-008-hasdeo-forest"
+    name: "Hasdeo Arand Protected Forest Zone"
+    location_type: "forest"
+    latitude: 22.8000
+    longitude: 82.6000
+    radius_meters: 12000
+    priority: "routine"
+    risk_category: "canopy_loss_and_illegal_clearing"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-2", "NASA-FIRMS"]
+    description: "Dense biodiversity corridor monitored for unauthorized tree felling, mining encroachment, and fires."
+
+  - id: "loc-009-sardar-sarovar"
+    name: "Sardar Sarovar Dam and Basin"
+    location_type: "reservoir"
+    latitude: 21.8315
+    longitude: 73.7483
+    radius_meters: 10000
+    priority: "critical"
+    risk_category: "inflow_surplus_and_spillway_stress"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "NASA-GPM", "Copernicus-DEM"]
+    description: "Major concrete gravity dam on Narmada River; requires continuous monitoring of reservoir storage volume."
+
+  - id: "loc-010-mumbai-coastal"
+    name: "Mumbai Coastal Road Land Reclamation Zone"
+    location_type: "urban_construction"
+    latitude: 18.9800
+    longitude: 72.8000
+    radius_meters: 5000
+    priority: "routine"
+    risk_category: "reclamation_subsidence_and_embankment"
+    monitoring_frequency: "continuous_pass"
+    sensors: ["Sentinel-1", "Sentinel-2", "Copernicus-DEM"]
+    description: "Heavily engineered maritime expressway corridor built on reclaimed ground and seawalls."

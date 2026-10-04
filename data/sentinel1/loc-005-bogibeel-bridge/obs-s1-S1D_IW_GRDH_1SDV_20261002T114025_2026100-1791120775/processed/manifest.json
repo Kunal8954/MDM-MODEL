@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-005-bogibeel-bridge",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775",
+  "product_id": "S1D_IW_GRDH_1SDV_20261002T114025_20261002T114050_004836_009162_BB33_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "ASCENDING",
+  "relative_orbit": 70,
+  "acquisition_time": "2026-10-02T11:40:25.423472",
+  "processed_at": "2026-10-04T13:33:15.045087+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775\\sentinel1_grd_S1D_IW_GRDH_1SDV_20261002T114025_20261002T114050_004836_009162_BB33_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-005-bogibeel-bridge\\obs-s1-S1D_IW_GRDH_1SDV_20261002T114025_2026100-1791120775\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -70.0,
+    "max": 29.5886,
+    "mean": -15.909,
+    "median": -15.7203,
+    "std": 8.0537,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": 21.7975,
+    "mean": -33.2455,
+    "median": -26.5004,
+    "std": 19.8513,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

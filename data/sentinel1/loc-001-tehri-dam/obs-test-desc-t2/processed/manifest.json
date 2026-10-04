@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-001-tehri-dam",
+  "observation_id": "obs-test-desc-t2",
+  "product_id": "S1_TEST_PROD_DESC_T2",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "DESCENDING",
+  "relative_orbit": 63,
+  "acquisition_time": "2026-10-02T00:43:00",
+  "processed_at": "2026-10-04T13:19:20.306651+00:00",
+  "source_raster_path": "C:\\Users\\LENOVO\\AppData\\Local\\Temp\\pytest-of-LENOVO\\pytest-31\\sar_temporal_data0\\loc-001-tehri-dam\\obs-test-desc-t2\\sentinel1_grd_obs-test-desc-t2.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-test-desc-t2\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-test-desc-t2\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -3.0103,
+    "max": -3.0103,
+    "mean": -3.0103,
+    "median": -3.0103,
+    "std": 0.0,
+    "valid_pixel_count": 812
+  },
+  "vh_statistics": {
+    "min": -3.0103,
+    "max": -3.0103,
+    "mean": -3.0103,
+    "median": -3.0103,
+    "std": 0.0,
+    "valid_pixel_count": 812
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 32,
+    "width": 32
+  },
+  "status": "SUCCESS"
+}

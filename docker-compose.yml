@@ -1,0 +1,83 @@
+version: "3.9"
+
+services:
+  # 1. Authoritative Spatial Database (PostgreSQL 16 + PostGIS 3.4)
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: satguard-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-satguard_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_this_secure_database_password}
+      POSTGRES_DB: ${POSTGRES_DB:-satguard_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U satguard_admin -d satguard_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. SATGUARD Backend Intelligence & API Engine
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: satguard-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SATGUARD_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-satguard_admin}:${POSTGRES_PASSWORD:-change_this_secure_database_password}@db:5432/${POSTGRES_DB:-satguard_db}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000,http://localhost:80}
+      SECURITY_HEADERS_ENABLED: "true"
+      RATE_LIMIT_ENABLED: "true"
+      RATE_LIMIT_REQUESTS_PER_MINUTE: "120"
+      AUDIT_LOGGING_ENABLED: "true"
+      EXTERNAL_TIMEOUT_SECONDS: "45"
+      CDSE_CLIENT_ID: ${CDSE_CLIENT_ID}
+      CDSE_CLIENT_SECRET: ${CDSE_CLIENT_SECRET}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      FIRMS_MAP_KEY: ${FIRMS_MAP_KEY}
+      EARTHDATA_USERNAME: ${EARTHDATA_USERNAME}
+      EARTHDATA_PASSWORD: ${EARTHDATA_PASSWORD}
+    ports:
+      - "8000:8000"
+    volumes:
+      - storage_data:/app/storage/data
+      - storage_cache:/app/storage/cache
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # 3. Government Intelligence Dashboard (Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: satguard-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "5173:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  postgres_data:
+  storage_data:
+  storage_cache:

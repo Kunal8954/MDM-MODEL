@@ -1,0 +1,43 @@
+{
+  "location_id": "loc-008-hasdeo-forest",
+  "observation_id": "obs-s1-S1D_IW_GRDH_1SDV_20260929T002025_2026092-1791120898",
+  "product_id": "S1D_IW_GRDH_1SDV_20260929T002025_20260929T002050_004785_008F91_0B4C_COG",
+  "mission": "Sentinel-1",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "orbit_direction": "DESCENDING",
+  "relative_orbit": 19,
+  "acquisition_time": "2026-09-29T00:20:25.430360",
+  "processed_at": "2026-10-04T13:35:16.122252+00:00",
+  "source_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-008-hasdeo-forest\\obs-s1-S1D_IW_GRDH_1SDV_20260929T002025_2026092-1791120898\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260929T002025_20260929T002050_004785_008F91_0B4C_COG.tif",
+  "vv_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-008-hasdeo-forest\\obs-s1-S1D_IW_GRDH_1SDV_20260929T002025_2026092-1791120898\\processed\\vv_db.tif",
+  "vh_raster_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-008-hasdeo-forest\\obs-s1-S1D_IW_GRDH_1SDV_20260929T002025_2026092-1791120898\\processed\\vh_db.tif",
+  "vv_unit": "dB",
+  "vh_unit": "dB",
+  "vv_statistics": {
+    "min": -29.9944,
+    "max": 3.9503,
+    "mean": -8.4855,
+    "median": -7.0937,
+    "std": 4.9118,
+    "valid_pixel_count": 205892
+  },
+  "vh_statistics": {
+    "min": -70.0,
+    "max": -5.1554,
+    "mean": -15.5254,
+    "median": -14.182,
+    "std": 4.7457,
+    "valid_pixel_count": 205892
+  },
+  "speckle_filter": "none",
+  "processing_version": "1.0.0",
+  "dimensions": {
+    "height": 512,
+    "width": 512
+  },
+  "status": "SUCCESS"
+}

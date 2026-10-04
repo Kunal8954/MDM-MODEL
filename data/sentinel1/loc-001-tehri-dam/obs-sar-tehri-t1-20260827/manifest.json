@@ -1,0 +1,20 @@
+{
+  "location_id": "loc-001-tehri-dam",
+  "observation_id": "obs-sar-tehri-t1-20260827",
+  "product_id": "S1D_IW_GRDH_1SDV_20260827T004304_20260827T004329_004304_007EDF_7A90_COG",
+  "mission": "Sentinel-1",
+  "product_type": "GRD",
+  "instrument_mode": "IW",
+  "polarizations": [
+    "VV",
+    "VH"
+  ],
+  "acquisition_time": "2026-08-27T00:43:04",
+  "retrieved_at": "2026-10-04T07:20:47.588303+00:00",
+  "provider": "Copernicus Data Space Ecosystem",
+  "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+  "local_path": "C:\\CODE\\MDM\\data\\sentinel1\\loc-001-tehri-dam\\obs-sar-tehri-t1-20260827\\sentinel1_grd_S1D_IW_GRDH_1SDV_20260827T004304_20260827T004329_004304_007EDF_7A90_COG.tif",
+  "file_size_bytes": 1914686,
+  "sha256": "5e22d5375f7e081fca7c38f3cb05aa37146e3bb65800edd157f007166096ca25",
+  "retrieval_status": "SUCCESS"
+}

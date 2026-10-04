@@ -2,13 +2,20 @@ import React from 'react';
 import { 
   LayoutDashboard, 
   MapPin, 
+  Globe2,
   AlertTriangle, 
   Activity, 
   Layers,
   ChevronRight
 } from 'lucide-react';
 
-export type ActiveTab = 'overview' | 'locations' | 'alerts' | 'monitoring' | 'evidence';
+export type ActiveTab =
+  | 'overview'
+  | 'locations'
+  | 'alerts'
+  | 'monitoring'
+  | 'evidence'
+  | 'aoi';
 
 interface NavigationProps {
   activeTab: ActiveTab;
@@ -32,6 +39,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       isAlertBadge: true 
     },
     { id: 'monitoring' as ActiveTab, label: 'Monitoring Center', icon: Activity },
+    { id: 'aoi' as ActiveTab, label: 'Area Monitoring', icon: Globe2 },
     { id: 'evidence' as ActiveTab, label: 'Evidence Explorer', icon: Layers },
   ];
 

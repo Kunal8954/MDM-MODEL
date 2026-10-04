@@ -104,6 +104,7 @@ def test_quality_control_cloud_rejection():
 # ----------------------------------------------------------------------
 # 5. Database Persistence Tests
 # ----------------------------------------------------------------------
+@pytest.mark.live_data
 def test_database_persistence():
     init_db()
     db = get_db_session()
@@ -157,6 +158,7 @@ def test_api_get_location_endpoint():
     assert data["name"] == "Tehri Dam and Reservoir"
 
 
+@pytest.mark.live_data
 def test_api_location_observations_endpoint():
     res = client.get("/api/locations/loc-001-tehri-dam/observations")
     assert res.status_code == 200
@@ -165,6 +167,7 @@ def test_api_location_observations_endpoint():
     assert len(data) >= 2
 
 
+@pytest.mark.live_data
 def test_api_location_changes_endpoint():
     res = client.get("/api/locations/loc-001-tehri-dam/changes")
     assert res.status_code == 200
@@ -190,6 +193,7 @@ def test_sar_processor_calibration():
     assert np.isclose(db[1, 0], 0.0, atol=0.1)
 
 
+@pytest.mark.live_data
 def test_api_sar_changes_endpoint():
     res = client.get("/api/locations/loc-001-tehri-dam/sar/changes")
     assert res.status_code == 200

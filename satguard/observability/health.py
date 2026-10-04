@@ -54,10 +54,28 @@ def check_readiness(db: Session) -> Dict[str, Any]:
     try:
         from satguard.monitoring.scheduler import scheduler
         sched_status = "ACTIVE" if scheduler.is_running else "STANDBY"
+
+        # MonitoringScheduler is thread-based and exposes no job registry, so the
+        # meaningful health signal is the count of locations under monitoring.
+        monitored_locations = None
+        try:
+            from satguard.models.entities import CriticalLocation
+            from satguard.db.session import get_db_session
+            _sess = get_db_session()
+            try:
+                monitored_locations = _sess.query(CriticalLocation).filter(
+                    CriticalLocation.monitoring_enabled.is_(True)
+                ).count()
+            finally:
+                _sess.close()
+        except Exception:
+            monitored_locations = None
+
         dependencies["scheduler"] = {
             "status": "AVAILABLE",
             "scheduler_state": sched_status,
-            "monitored_locations": len(scheduler.jobs),
+            "monitored_locations": monitored_locations,
+            "check_interval_seconds": scheduler.check_interval_seconds,
         }
     except Exception:
         dependencies["scheduler"] = {"status": "DEGRADED", "scheduler_state": "UNAVAILABLE"}

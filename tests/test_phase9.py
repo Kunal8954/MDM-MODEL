@@ -499,6 +499,7 @@ def test_conservative_scientific_semantics():
 # ==============================================================================
 # 26. Real Tehri Dam Verification
 # ==============================================================================
+@pytest.mark.live_data
 def test_real_tehri_dam_historical_verification():
     with get_db_session() as db:
         loc = db.query(CriticalLocation).filter(CriticalLocation.id == "loc-001-tehri-dam").first()

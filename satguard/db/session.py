@@ -14,6 +14,24 @@ from satguard.models.entities import Base
 logger = logging.getLogger("satguard.db")
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
+
+# NOTE: `PRAGMA foreign_keys=ON` would make the models' `ondelete="CASCADE"` clauses take
+# effect on SQLite, which ignores foreign keys by default. It is deliberately not enabled
+# globally yet: doing so immediately fails 13 phase7/phase10 tests, because
+# `satguard/monitoring/orchestrator.py` writes child rows for location ids that have no
+# `critical_locations` parent. That is a genuine referential-integrity bug, but it lives in
+# the legacy location pipeline and is fixed separately. New code must not rely on cascade
+# behaviour for correctness, so the monitoring router deletes children explicitly.
+
+
+def create_sqlite_engine(url: str):
+    """
+    Build a SQLite engine. Shared by the app and tests so both use identical settings.
+
+    Foreign keys are intentionally left unenforced (SQLite's default); see the note above.
+    """
+    return create_engine(url, connect_args={"check_same_thread": False})
+
 # Derive database URL
 raw_db_url = os.getenv("DATABASE_URL")
 
@@ -46,10 +64,17 @@ def get_engine():
         except Exception as e:
             logger.warning(f"PostgreSQL connection refused or unavailable ({e}). Falling back to local SQLite database.")
 
-    # Local SQLite fallback
+    # Local SQLite fallback. `DATABASE_URL` may point at a SQLite file, which is how the
+    # test suite isolates itself from the developer's real database.
+    if raw_db_url and raw_db_url.startswith("sqlite"):
+        engine = create_sqlite_engine(raw_db_url)
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        logger.info("Initialized SQLite database from DATABASE_URL.")
+        return engine
+
     sqlite_path = PROJECT_ROOT / "satguard.db"
     sqlite_url = f"sqlite:///{sqlite_path.as_posix()}"
-    engine = create_engine(sqlite_url, connect_args={"check_same_thread": False})
+    engine = create_sqlite_engine(sqlite_url)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     logger.info(f"Initialized local database at {sqlite_url}")
     return engine
@@ -107,6 +132,19 @@ def init_db():
         seed_default_users(session)
     finally:
         session.close()
+
+    # Seed the configured monitoring locations (config/data_sources.yaml).
+    # Required: the API, tests and scheduler all resolve locations by id.
+    location_session = get_db_session()
+    try:
+        from satguard.db.seed import seed_critical_locations
+        seeded_locations = seed_critical_locations(location_session)
+        logger.info(f"Seeded {seeded_locations} monitoring locations from config/data_sources.yaml.")
+    except Exception as e:
+        location_session.rollback()
+        logger.warning(f"Could not seed monitoring locations: {e}")
+    finally:
+        location_session.close()
 
     logger.info("Database schema initialized and hardened.")
 

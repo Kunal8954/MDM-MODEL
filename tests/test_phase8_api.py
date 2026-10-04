@@ -117,6 +117,7 @@ def test_location_timeline_endpoint():
     assert res_404.status_code == 404
 
 
+@pytest.mark.live_data
 def test_real_tehri_authoritative_values():
     """
     Verify Tehri Dam (loc-001-tehri-dam) risk assessment preserves exact authoritative values:

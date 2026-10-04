@@ -14,8 +14,10 @@ from satguard.db.session import get_db_session, init_db
 from satguard.models.entities import CriticalLocation, SatelliteObservation, ChangeDetection
 from satguard.ingestion.detector import ObservationDetector
 from satguard.processing.pipeline import MonitoringPipeline
+from satguard.api.monitoring_router import router as monitoring_router
 
 from contextlib import asynccontextmanager
+import logging
 import os
 
 from satguard.config import settings
@@ -40,6 +42,8 @@ from satguard.security import (
     query_audit_logs,
 )
 from satguard.models.entities import User
+
+logger = logging.getLogger("satguard.api")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -67,6 +71,9 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+# Arbitrary-AOI monitoring: areas, runs, anomalies and DEMO exploration.
+app.include_router(monitoring_router)
 
 # Phase 10 Security Middleware
 app.add_middleware(SecurityHeadersMiddleware)

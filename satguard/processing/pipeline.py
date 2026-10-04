@@ -276,14 +276,17 @@ class MonitoringPipeline:
                     current_water_area_m2=0.0,
                     water_change_area_m2=sar_change["significant_change_area_m2"],
                     water_change_percentage=sar_change["significant_change_percentage"],
-                    mean_delta_ndwi=sar_change["mean_delta_vv_db"],  # Stored in delta metric column
+                    mean_delta_ndwi=sar_change["mean_delta_vv_db"],
                     max_delta_ndwi=sar_change["max_delta_vv_db"],
                     change_mask_path=mask_path,
                     summary_notes=(
-                        f"Sentinel-1 SAR C-band IW Dual-Pol. "
+                        f"Sentinel-1 SAR C-band IW Dual-Pol VV/VH. "
                         f"Baseline VV: {sar_change['t1_vv_mean_db']} dB, Current VV: {sar_change['t2_vv_mean_db']} dB. "
-                        f"Mean Delta: {sar_change['mean_delta_vv_db']} dB. "
-                        f"Significant Area Shift: {sar_change['significant_change_area_m2']:,.0f} m² ({sar_change['significant_change_percentage']}%)."
+                        f"Mean Delta VV: {sar_change['mean_delta_vv_db']} dB, Mean Delta VH: {sar_change['mean_delta_vh_db']} dB. "
+                        f"Joint VV+VH change: {sar_change['significant_change_percentage']}% "
+                        f"({sar_change['significant_change_area_m2']:,.0f} m²) across "
+                        f"{sar_change['significant_change_regions_count']} connected region(s); "
+                        f"thresholds VV>={sar_change['vv_threshold_db']} dB, VH>={sar_change['vh_threshold_db']} dB."
                     ),
                 )
                 db.add(change_record)

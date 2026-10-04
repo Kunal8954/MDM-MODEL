@@ -129,6 +129,7 @@ def test_api_sentinel1_observations_endpoint(setup_db):
     assert isinstance(data, list)
 
 
+@pytest.mark.live_data
 def test_api_sentinel1_check_endpoint(setup_db):
     res = client.post("/api/locations/loc-001-tehri-dam/sentinel-1/check?lookback_days=7")
     assert res.status_code == 200

@@ -5,7 +5,7 @@ Supports PostgreSQL + PostGIS with graceful local SQLite compatibility.
 """
 
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 from sqlalchemy import (
     Column,
     String,
@@ -745,6 +745,93 @@ class AuditLog(Base):
         }
 
 
+class MonitoringArea(Base):
+    """
+    A user-defined area of interest of any geometry.
+
+    Distinct from `CriticalLocation`, which models a curated point with a radius. This
+    table accepts an arbitrary point, bounding box, polygon or GeoJSON geometry so the
+    product can monitor anywhere a user draws, not only a seeded list of sites.
+    """
+
+    __tablename__ = "monitoring_areas"
+
+    id = Column(String(64), primary_key=True)
+    user_label = Column(String(255), nullable=False, default="")
+    monitoring_mode = Column(String(50), nullable=False, default="general")
+    geometry = Column(Text, nullable=False)          # GeoJSON, any polygon geometry
+    geometry_type = Column(String(30), nullable=False, default="Polygon")
+    bbox = Column(Text, nullable=False, default="[]")  # [minx, miny, maxx, maxy]
+    center_lon = Column(Float, nullable=False)
+    center_lat = Column(Float, nullable=False)
+    area_m2 = Column(Float, nullable=False, default=0.0)
+    crs = Column(String(20), nullable=False, default="EPSG:4326")
+    # Provenance of the area itself: LIVE means a real user selection, DEMO means it was
+    # created by exploring sample data. It is never implied by the absence of a value.
+    source = Column(String(20), nullable=False, default="LIVE")
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+    metadata_json = Column(Text, nullable=False, default="{}")
 
 
+class AnomalyRecord(Base):
+    """
+    One reported anomaly region, with its evidence and separated confidence measures.
 
+    `detection_confidence` describes the run, `anomaly_confidence` describes this region
+    and `severity` describes operational significance. They are stored separately because
+    collapsing them into one score would misrepresent all three.
+    """
+
+    __tablename__ = "anomaly_records"
+
+    id = Column(String(64), primary_key=True)
+    area_id = Column(String(64), ForeignKey("monitoring_areas.id", ondelete="CASCADE"), nullable=False)
+    run_id = Column(String(64), nullable=True)
+    region_id = Column(String(96), nullable=False, index=True)
+    monitoring_mode = Column(String(50), nullable=False, default="general")
+    geometry = Column(Text, nullable=False)          # GeoJSON polygon
+    centroid_lon = Column(Float, nullable=False)
+    centroid_lat = Column(Float, nullable=False)
+    bbox = Column(Text, nullable=False, default="[]")
+    area_m2 = Column(Float, nullable=False, default=0.0)
+    pixel_count = Column(Integer, nullable=False, default=0)
+    detection_confidence = Column(Float, nullable=False, default=0.0)
+    anomaly_confidence = Column(Float, nullable=False, default=0.0)
+    severity = Column(String(20), nullable=False, default="none")
+    evidence = Column(Text, nullable=False, default="[]")     # JSON list
+    caveats = Column(Text, nullable=False, default="[]")      # JSON list
+    layer_agreement = Column(Text, nullable=False, default="{}")
+    source = Column(String(20), nullable=False, default="LIVE")
+    detected_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+
+
+class MonitoringJob(Base):
+    """
+    An asynchronous monitoring run for one AOI.
+
+    Separate from `ProcessingJob`, which is scoped to a single satellite observation. A
+    monitoring run spans acquisition, suppression, detection and anomaly extraction, and the
+    user needs to see which stage it is in rather than only a final status.
+
+    `progress_percent` and `stage_history` are stored so a client that reconnects mid-run
+    can render where the job got to without replaying events.
+    """
+
+    __tablename__ = "monitoring_jobs"
+
+    id = Column(String(64), primary_key=True)
+    area_id = Column(String(64), ForeignKey("monitoring_areas.id", ondelete="CASCADE"), nullable=False)
+    source = Column(String(20), nullable=False, default="LIVE")
+    monitoring_mode = Column(String(50), nullable=False, default="general")
+    status = Column(String(30), nullable=False, default="QUEUED")
+    stage = Column(String(50), nullable=False, default="QUEUED")
+    progress_percent = Column(Integer, nullable=False, default=0)
+    stage_history = Column(Text, nullable=False, default="[]")
+    request_json = Column(Text, nullable=False, default="{}")
+    result_json = Column(Text, nullable=True)
+    error_code = Column(String(60), nullable=True)
+    error_message = Column(Text, nullable=True)
+    anomaly_count = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+    started_at = Column(DateTime(timezone=True), nullable=True)
+    completed_at = Column(DateTime(timezone=True), nullable=True)

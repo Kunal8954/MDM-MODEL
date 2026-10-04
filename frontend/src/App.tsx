@@ -15,6 +15,7 @@ import { LocationDetailView } from './views/LocationDetailView';
 import { AlertsView } from './views/AlertsView';
 import { MonitoringView } from './views/MonitoringView';
 import { EvidenceExplorerView } from './views/EvidenceExplorerView';
+import { AoiMonitoringView } from './views/AoiMonitoringView';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -175,6 +176,8 @@ export const App: React.FC = () => {
                 setSelectedLocation(loc);
               }}
             />
+          ) : activeTab === 'aoi' ? (
+            <AoiMonitoringView />
           ) : (
             <EvidenceExplorerView
               dataStatus={dataStatus}

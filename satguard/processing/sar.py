@@ -822,3 +822,140 @@ class SARProcessor:
             "delta_vh_raster": str(delta_vh_path),
             "manifest": change_manifest,
         }
+
+    # ------------------------------------------------------------------
+    # ARRAY-LEVEL DIFFERENTIAL CHANGE (Sentinel Hub Process API path)
+    # ------------------------------------------------------------------
+    def compute_sar_change(
+        self,
+        vv_t1_linear: np.ndarray,
+        vh_t1_linear: np.ndarray,
+        vv_t2_linear: np.ndarray,
+        vh_t2_linear: np.ndarray,
+        total_aoi_area_m2: Optional[float] = None,
+        vv_threshold_db: Optional[float] = None,
+        vh_threshold_db: Optional[float] = None,
+        min_region_pixels: int = 5,
+    ) -> Dict[str, Any]:
+        """
+        Dual-temporal differential change detection on in-memory calibrated arrays.
+
+        This is the array-level counterpart to :meth:`compare_observations`, used when
+        VV/VH have already been retrieved directly from the Sentinel Hub Process API
+        rather than from a stored Sentinel-1 GRD product.
+
+        Scientific basis:
+          delta_VV = 10*log10(VV_t2) - 10*log10(VV_t1)   (calibrated backscatter, dB)
+          delta_VH = 10*log10(VH_t2) - 10*log10(VH_t1)
+
+        A pixel is classified as changed only when |delta_VV| and |delta_VH| both exceed
+        their thresholds (joint VV+VH change). Single-polarisation excursions are
+        retained in the mask but do not independently qualify as change, which suppresses
+        speckle and radiometric noise. Isolated pixels are removed by connected-component
+        area filtering.
+
+        Args:
+            vv_t1_linear: Baseline (T1) VV backscatter.
+            vh_t1_linear: Baseline (T1) VH backscatter.
+            vv_t2_linear: Current (T2) VV backscatter.
+            vh_t2_linear: Current (T2) VH backscatter.
+            total_aoi_area_m2: Geographic area of the AOI. When omitted, area is
+                derived from the pixel count and configured pixel resolution.
+            vv_threshold_db: VV change threshold in dB (default configured threshold).
+            vh_threshold_db: VH change threshold in dB (default configured threshold).
+            min_region_pixels: Minimum connected-component size to report as a region.
+
+        Returns:
+            Dictionary with dB statistics, the delta arrays, classified change mask,
+            significant-region geometry, and the change_type label.
+        """
+        arrays = {
+            "vv_t1": vv_t1_linear,
+            "vh_t1": vh_t1_linear,
+            "vv_t2": vv_t2_linear,
+            "vh_t2": vh_t2_linear,
+        }
+        shapes = {k: np.shape(v) for k, v in arrays.items()}
+        if len(set(shapes.values())) != 1:
+            raise IncompatibleGeometryError(
+                f"SAR array geometry mismatch, cannot compare: {shapes}"
+            )
+
+        th_vv = self.vv_change_threshold_db if vv_threshold_db is None else vv_threshold_db
+        th_vh = self.vh_change_threshold_db if vh_threshold_db is None else vh_threshold_db
+
+        # 1. Calibrate all four arrays to dB
+        vv_t1_db = np.asarray(self.calibrate_to_db(vv_t1_linear), dtype=np.float64)
+        vh_t1_db = np.asarray(self.calibrate_to_db(vh_t1_linear), dtype=np.float64)
+        vv_t2_db = np.asarray(self.calibrate_to_db(vv_t2_linear), dtype=np.float64)
+        vh_t2_db = np.asarray(self.calibrate_to_db(vh_t2_linear), dtype=np.float64)
+
+        # 2. Differential backscatter
+        delta_vv_db = vv_t2_db - vv_t1_db
+        delta_vh_db = vh_t2_db - vh_t1_db
+
+        finite = np.isfinite(delta_vv_db) & np.isfinite(delta_vh_db)
+
+        vv_changed = finite & (np.abs(delta_vv_db) >= th_vv)
+        vh_changed = finite & (np.abs(delta_vh_db) >= th_vh)
+        joint_changed = vv_changed & vh_changed
+
+        total_valid = int(np.sum(finite))
+        joint_count = int(np.sum(joint_changed))
+        if total_valid == 0:
+            raise SARValidationError("No finite SAR pixels available for change detection.")
+
+        if total_aoi_area_m2 is not None and total_aoi_area_m2 > 0:
+            valid_area_m2 = total_aoi_area_m2 * (total_valid / float(finite.size))
+            joint_pct = 100.0 * joint_count / float(total_valid)
+            significant_area_m2 = (joint_pct / 100.0) * valid_area_m2
+        else:
+            valid_area_m2 = total_valid * self.pixel_area_m2
+            joint_pct = 100.0 * joint_count / float(total_valid)
+            significant_area_m2 = joint_count * self.pixel_area_m2
+
+        # 3. Classified change mask
+        #    0 = no change, 1 = VV only, 2 = VH only, 3 = joint VV+VH change
+        change_mask = np.zeros(delta_vv_db.shape, dtype=np.uint8)
+        change_mask[vv_changed & ~vh_changed] = 1
+        change_mask[~vv_changed & vh_changed] = 2
+        change_mask[joint_changed] = 3
+
+        # 4. Connected-component filtering of joint change
+        regions = self.detect_connected_change_regions(change_mask, min_pixels=min_region_pixels)
+        regions_total_area = float(sum(r["area_m2"] for r in regions))
+
+        # 5. Classification
+        if joint_count == 0 or not regions:
+            change_type = "NO_CHANGE"
+        elif joint_pct >= 10.0:
+            change_type = "SAR_BACKSCATTER_CHANGE"
+        else:
+            change_type = "SURFACE_ROUGHNESS_CHANGE"
+
+        return {
+            "change_type": change_type,
+            "sensor": "SENTINEL-1",
+            "polarizations": ["VV", "VH"],
+            "vv_threshold_db": th_vv,
+            "vh_threshold_db": th_vh,
+            "t1_vv_mean_db": round(float(np.nanmean(vv_t1_db)), 4),
+            "t2_vv_mean_db": round(float(np.nanmean(vv_t2_db)), 4),
+            "t1_vh_mean_db": round(float(np.nanmean(vh_t1_db)), 4),
+            "t2_vh_mean_db": round(float(np.nanmean(vh_t2_db)), 4),
+            "mean_delta_vv_db": round(float(np.nanmean(delta_vv_db)), 4),
+            "max_delta_vv_db": round(float(np.nanmax(delta_vv_db)), 4),
+            "mean_delta_vh_db": round(float(np.nanmean(delta_vh_db)), 4),
+            "max_delta_vh_db": round(float(np.nanmax(delta_vh_db)), 4),
+            "vv_changed_percentage": round(100.0 * float(np.sum(vv_changed)) / total_valid, 4),
+            "vh_changed_percentage": round(100.0 * float(np.sum(vh_changed)) / total_valid, 4),
+            "significant_change_percentage": round(joint_pct, 4),
+            "significant_change_area_m2": round(significant_area_m2, 2),
+            "significant_region_area_m2": round(regions_total_area, 2),
+            "significant_change_regions_count": len(regions),
+            "significant_change_regions": regions,
+            "valid_pixel_count": total_valid,
+            "delta_vv_db_array": delta_vv_db,
+            "delta_vh_db_array": delta_vh_db,
+            "change_mask_array": change_mask,
+        }

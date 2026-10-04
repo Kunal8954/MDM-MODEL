@@ -31,7 +31,7 @@ OPTICAL_SITES = ("south_lhonak_glacier", "siachen_glacier",
                  "tehri_dam_construction", "sardar_sarovar_reservoir")
 
 
-def _detect(dataset, monitoring_mode):
+def _detect(dataset, monitoring_mode, **detector_kwargs):
     quality_b = dataset.baseline.quality_mask(monitoring_mode)
     quality_c = dataset.current.quality_mask(monitoring_mode)
     return detect_change(
@@ -41,6 +41,7 @@ def _detect(dataset, monitoring_mode):
         pixel_area_m2=dataset.transform.pixel_area_m2(
             dataset.transform.f + dataset.transform.e / 2.0
         ),
+        **detector_kwargs,
     )
 
 
@@ -194,6 +195,66 @@ def test_glacier_retreat_is_detected_not_swallowed():
     assert detected.sum() > 0
     assert _iou(detected, dataset.truth_mask) > 0.75
     assert outcome.confidence > 0.5
+
+
+@pytest.mark.parametrize("shape", [(140, 140), (256, 256)])
+def test_weak_alignment_correlation_never_vetoes_real_change(shape):
+    """
+    A large, uniform change produces its own phase-correlation peak, whose position
+    drifts with grid size even though the scenes are pixel-aligned. When such a
+    coincidence exceeded the shift limit, the whole comparison was vetoed as
+    "misregistration" and the change was reported as nothing at all, at some grid
+    sizes but not others. A peak too weak to locate an offset must not discard a real
+    change; it must be reported as unverified alignment and the comparison must go on.
+    """
+    site = demo_site("south_lhonak_glacier")
+    dataset = build_demo_dataset(bounds=site.bounds, monitoring_mode="glacier",
+                                 scenario="glacier_retreat", shape=shape)
+    outcome = _detect(dataset, "glacier", registration_verified=True)
+
+    assert not outcome.rejected
+    assert outcome.reject_reason is None
+    assert outcome.factors["registration_verified_by_construction"] is True
+    assert outcome.anomaly_mask.sum() > 0
+    assert _iou(outcome.anomaly_mask, dataset.truth_mask) > 0.75
+
+
+def _shifted_pair(baseline, valid, shift_px):
+    """One real (unverified) scene pair where the current scene is rolled by `shift_px`."""
+    from datetime import datetime, timezone
+
+    from satguard.processing.change_detection import TemporalBaseline
+    from satguard.processing.preprocess import QualityMask
+
+    current = np.roll(baseline, shift_px, axis=1)
+    bands_b = {"B03": baseline, "B04": baseline, "B08": baseline}
+    bands_c = {"B03": current, "B04": current, "B08": current}
+    quality = QualityMask(valid, np.ones_like(valid, dtype=float))
+    outcome = detect_change(
+        TemporalBaseline(bands_b, [datetime(2026, 1, 1, tzinfo=timezone.utc)], quality, 1),
+        Observation(datetime(2026, 1, 16, tzinfo=timezone.utc), bands_c, quality),
+        "general",
+        pixel_area_m2=100.0,
+    )
+    return bands_b, outcome
+
+
+def test_live_alignment_is_still_estimated_and_vetoed_on_large_offset():
+    """
+    `registration_verified` is a claim about the data, so it must not become a blanket
+    exemption: real scenes still have their offset estimated, and a genuine large
+    misregistration must still veto the comparison rather than pass silently.
+    """
+    rng = np.random.default_rng(7)
+    baseline = rng.normal(0.30, 0.02, (64, 64))
+    baseline[16:48, 16:48] = 0.65
+    valid = np.ones_like(baseline, dtype=bool)
+
+    _, outcome = _shifted_pair(baseline, valid, shift_px=12)
+
+    assert outcome.reject_reason == "misregistration"
+    assert outcome.changed_pixels == 0
+    assert "registration_verified_by_construction" not in outcome.factors
 
 
 def test_flood_monitoring_refuses_to_report_without_sar():

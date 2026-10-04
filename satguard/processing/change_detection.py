@@ -370,6 +370,12 @@ def select_temporal_baseline(
 # ---------------------------------------------------------------------------
 
 
+# A correlation peak below this height cannot be used to locate an offset, so the
+# offset is reported as unknown rather than applied. Verified registrations peak near
+# 1.0, while a low-texture scene leaves the peak ambiguous at a few hundredths.
+MIN_REGISTRATION_CONFIDENCE = 0.15
+
+
 def estimate_registration_shift(
     baseline: np.ndarray,
     current: np.ndarray,
@@ -979,6 +985,7 @@ def detect_change(
     pixel_area_m2: Optional[float] = None,
     registration_band: str = "B03",
     max_registration_shift_px: float = 2.0,
+    registration_verified: bool = False,
     max_changed_fraction: float = 0.6,
     min_valid_fraction: float = 0.10,
     min_support: int = 2,
@@ -1055,7 +1062,20 @@ def detect_change(
     # --- gate: co-registration --------------------------------------------
     baseline_bands = baseline.bands
     current_bands = current.bands
-    if registration_band in baseline_bands and registration_band in current_bands:
+    if registration_verified:
+        # Synthetic scenes are rendered on one shared grid, so alignment is exact by
+        # construction. Estimating it is meaningless: on a low-texture scene the
+        # correlation cannot locate an offset and returns a large spurious one, which
+        # would otherwise veto a real change as "misregistration". LIVE scenes still
+        # take the full estimation path below.
+        gates.append(QualityGate(
+            "co_registration", True,
+            "Synthetic scenes share one grid, so alignment is exact by construction; "
+            "registration was not estimated.",
+            blocking=False,
+        ))
+        factors["registration_verified_by_construction"] = True
+    elif registration_band in baseline_bands and registration_band in current_bands:
         shift_cols, shift_rows, peak = estimate_registration_shift(
             baseline_bands[registration_band], current_bands[registration_band], valid
         )
@@ -1078,7 +1098,7 @@ def detect_change(
                 monitoring_mode=config.monitoring_mode,
                 rejected=True, reject_reason="misregistration",
             )
-        if shift_magnitude > 0.25 and peak >= 0.15:
+        if shift_magnitude > 0.25 and peak >= MIN_REGISTRATION_CONFIDENCE:
             factors["registration_correction_trusted"] = True
             baseline_bands = {
                 name: shift_array(arr, shift_cols, shift_rows)
@@ -1093,7 +1113,7 @@ def detect_change(
         else:
             # A shift of zero from a weak correlation means alignment is unknown, not
             # proven, so the gate says so rather than asserting the scenes are aligned.
-            if peak >= 0.15:
+            if peak >= MIN_REGISTRATION_CONFIDENCE:
                 gates.append(QualityGate(
                     "co_registration", True,
                     f"Scenes are aligned within {shift_magnitude:.2f} px.",

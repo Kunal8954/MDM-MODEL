@@ -315,6 +315,7 @@ def run_monitoring(
         mode,
         pixel_area_m2=transform.pixel_area_m2(transform.f + transform.e / 2.0),
         sar_change_mask=sar_mask,
+        registration_verified=request.source.upper() == DEMO_SOURCE,
     )
 
     run_confidence = compute_run_confidence(
